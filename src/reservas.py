@@ -1,18 +1,32 @@
 from observer import Observavel
+from states import State, ReservaPendente, ReservaConfirmada, ReservaCancelada
 
 class Reserva(Observavel):
-    def __init__(self, sala, usuario, inicio, fim):
+    def __init__(self, sala, usuario, inicio, fim, state: State):
         super().__init__()
         self.sala = sala
         self.usuario = usuario
         self.inicio = inicio
         self.fim = fim
         self.tipo_usuario = usuario.tipo_usuario  
-        self.status = "confirmada"             
 
+    def setReservaState(self, novo_estado):
+        self.state = novo_estado
+        self.state.reserva = self
+
+    def present_state(self):
+        return self.state.__class__.__name__
+    
+    def estado(self):
+        print(f"Estado atual da reserva: {self.state.__class__.__name__}")
+    
     def cancelar(self):
-        self.status = "cancelada"
-        self.notificar("cancelamento", {"status": self.status, "reserva": self})
+        self.state.cancelar()
+        self.notificar("cancelamento", {"reserva": self})
+        
+    def confirmar(self):
+        self.state.confirmar()
+        self.notificar("confirmacao", {"reserva": self})
 
     def modificar(self, novo_inicio, novo_fim):
         self.inicio = novo_inicio
