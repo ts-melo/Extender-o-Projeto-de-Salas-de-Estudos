@@ -1,5 +1,6 @@
 from observer import Observavel
-from states import State, ReservaPendente, ReservaConfirmada, ReservaCancelada
+from states import State, EstadoPendente, EstadoConfirmada, EstadoCancelada
+
 
 class Reserva(Observavel):
     def __init__(self, sala, usuario, inicio, fim, state: State):
@@ -8,25 +9,23 @@ class Reserva(Observavel):
         self.usuario = usuario
         self.inicio = inicio
         self.fim = fim
-        self.tipo_usuario = usuario.tipo_usuario  
+        self.tipo_usuario = usuario.tipo_usuario
+        self.setReservaState(state or EstadoPendente())
 
     def setReservaState(self, novo_estado):
         self.state = novo_estado
         self.state.reserva = self
 
-    def present_state(self):
-        return self.state.__class__.__name__
-    
-    def estado(self):
-        print(f"Estado atual da reserva: {self.state.__class__.__name__}")
+    def status(self):
+        return self.state.__class__.__name__.replace("Estado", "").lower()
     
     def cancelar(self):
         self.state.cancelar()
-        self.notificar("cancelamento", {"reserva": self})
+        self.notificar("cancelamento", {"reserva": self, "status": self.status()})
         
     def confirmar(self):
         self.state.confirmar()
-        self.notificar("confirmacao", {"reserva": self})
+        self.notificar("confirmacao", {"reserva": self, "status": self.status()})
 
     def modificar(self, novo_inicio, novo_fim):
         self.inicio = novo_inicio
@@ -34,5 +33,5 @@ class Reserva(Observavel):
         self.notificar("modificacao", {"inicio": novo_inicio, "fim": novo_fim, "reserva": self})
     
     def descricao(self):
-        return f"Reserva | Sala {self.sala.id} | {self.usuario.nome}"
+        return f"Reserva | Sala {self.sala.id} | {self.usuario.nome} | Status: {self.status()}"
 
