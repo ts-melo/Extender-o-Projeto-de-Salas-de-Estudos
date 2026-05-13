@@ -1,12 +1,8 @@
 import reservas
 from abc import ABC, abstractmethod
-class State:
-
-    def reserva(self) -> reservas:
-        return self.reserva
-    
-    def reserva(self, nova_reserva):
-        self.reserva = nova_reserva
+class State(ABC):
+    def __init__(self):
+        self.reserva = None
     
     @abstractmethod
     def cancelar(self):
@@ -18,13 +14,13 @@ class State:
 
 class EstadoPendente(State):
     def cancelar(self):
-        self.reserva.setReserva(EstadoCancelada())
+        self.reserva.setReservaState(EstadoCancelada())
     def confirmar(self):
-        self.reserva.setReserva(EstadoConfirmada())
+        self.reserva.setReservaState(EstadoConfirmada())
 
 class EstadoConfirmada(State):
     def cancelar(self):
-        self.reserva.setReserva(EstadoCancelada())
+        self.reserva.setReservaState(EstadoCancelada())
     def confirmar(self):
         print("Reserva já confirmada.")
 

@@ -56,12 +56,12 @@ def menu_principal():
             opcionais = input("Opção: ")
             
             if opcionais == "1":
-                nova_reserva = Equipamentos(nova_reserva)
+                reserva = Equipamentos(reserva)
             elif opcionais == "2":
-                nova_reserva = ServicoLimpeza(nova_reserva)
+                reserva = ServicoLimpeza(reserva)
             elif opcionais == "3":
-                nova_reserva = Equipamentos(nova_reserva)
-                nova_reserva = ServicoLimpeza(nova_reserva)
+                reserva = Equipamentos(reserva)
+                reserva = ServicoLimpeza(reserva)
             
             print("Processando reserva...")
             if tipo_usuario == "Docente":
@@ -70,6 +70,7 @@ def menu_principal():
                 gerenciador.def_politica(PoliticaPrimeiroAReservar())
             if gerenciador.processar_reserva(reserva, repo.listar()):
                 repo.adicionar(reserva)
+                reserva.confirmar()
                 print("Reserva criada com sucesso!")
                 print("Descrição da reserva:", reserva.descricao())
             else:
@@ -85,7 +86,7 @@ def menu_principal():
             for r in reservas:
                 if r.usuario.nome == nome_usuario and r.status == "confirmada":
                     r.cancelar()
-                    encontrada = True
+                    reserva_encontrada = True
                     print("Reserva cancelada com sucesso!")
                     break
             if not reserva_encontrada:

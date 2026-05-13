@@ -3,7 +3,7 @@ from states import State, EstadoPendente, EstadoConfirmada, EstadoCancelada
 
 
 class Reserva(Observavel):
-    def __init__(self, sala, usuario, inicio, fim, state: State):
+    def __init__(self, sala, usuario, inicio, fim, state: None):
         super().__init__()
         self.sala = sala
         self.usuario = usuario
@@ -15,7 +15,7 @@ class Reserva(Observavel):
     def setReservaState(self, novo_estado):
         self.state = novo_estado
         self.state.reserva = self
-
+    @property
     def status(self):
         return self.state.__class__.__name__.replace("Estado", "").lower()
     
