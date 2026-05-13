@@ -85,7 +85,7 @@ def menu_principal():
             reservas = repo.listar()
             reserva_encontrada = False
             for r in reservas:
-                if r.usuario.nome == nome_usuario and r.status == "confirmada":
+                if r.usuario.nome == nome_usuario and r.get_status == "confirmada":
                     r.cancelar()
                     reserva_encontrada = True
                     print("Reserva cancelada com sucesso!")
