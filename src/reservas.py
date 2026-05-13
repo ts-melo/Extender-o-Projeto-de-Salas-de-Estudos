@@ -16,16 +16,16 @@ class Reserva(Observavel):
         self.state = novo_estado
         self.state.reserva = self
     @property
-    def status(self):
+    def get_status(self):
         return self.state.__class__.__name__.replace("Estado", "").lower()
     
     def cancelar(self):
         self.state.cancelar()
-        self.notificar("cancelamento", {"reserva": self, "status": self.status()})
+        self.notificar("cancelamento", {"reserva": self, "status": self.get_status})
         
     def confirmar(self):
         self.state.confirmar()
-        self.notificar("confirmacao", {"reserva": self, "status": self.status()})
+        self.notificar("confirmacao", {"reserva": self, "status": self.get_status})
 
     def modificar(self, novo_inicio, novo_fim):
         self.inicio = novo_inicio
@@ -33,5 +33,5 @@ class Reserva(Observavel):
         self.notificar("modificacao", {"inicio": novo_inicio, "fim": novo_fim, "reserva": self})
     
     def descricao(self):
-        return f"Reserva | Sala {self.sala.id} | {self.usuario.nome} | Status: {self.status()}"
+        return f"Reserva | Sala {self.sala.id} | {self.usuario.nome} | Status: {self.get_status}"
 

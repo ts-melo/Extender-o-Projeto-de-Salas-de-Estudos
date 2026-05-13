@@ -6,6 +6,7 @@ from GerenciadorResevas import GerenciadorDeReservas
 from observer import Notificar, RelatoriodiarioService
 from decorator import  Equipamentos, ServicoLimpeza
 from factories import FactorySalaIndividual, FactorySalaGrupo, FactorySalaLaboratorio
+from states import EstadoPendente, EstadoConfirmada, EstadoCancelada
 def menu_principal():
 
     repo = ReservaRepositorio.get_instance()
@@ -45,7 +46,7 @@ def menu_principal():
                 fabrica = FactorySalaLaboratorio()
             
             sala = fabrica.criar_sala(id=sala_id)
-            reserva = Reserva(sala, usuario, inicio, fim)
+            reserva = Reserva(sala, usuario, inicio, fim, EstadoPendente())
             reserva.assinar(servico_email)
 
             print("---ESCOLHA DE ADICIONAIS---")
