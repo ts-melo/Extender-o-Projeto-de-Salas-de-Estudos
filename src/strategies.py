@@ -8,8 +8,8 @@ class PoliticaDeReserva(ABC):
 class PoliticaSimples(PoliticaDeReserva):
     def validar_reserva(self, nova_reserva, reservas_existentes):
         for reserva in reservas_existentes:
-            if reserva.sala.id == nova_reserva.sala.id and reserva.horario == nova_reserva.horario:
-                return False, "[Conflito de reserva]: Sala {reserva.sala.id} já reservada para o horário {reserva.horario}."
+            if reserva.sala.id == nova_reserva.sala.id and reserva.inicio == nova_reserva.inicio:
+                return False, f"[Conflito de reserva]: Sala {reserva.sala.id} já reservada para o horário {reserva.inicio}."
         return True, "Reserva autorizada."
     
 

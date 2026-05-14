@@ -6,6 +6,7 @@ from GerenciadorResevas import GerenciadorDeReservas
 from observer import Notificar, RelatoriodiarioService
 from decorator import  Equipamentos, ServicoLimpeza
 from factories import FactorySalaIndividual, FactorySalaGrupo, FactorySalaLaboratorio
+from states import EstadoPendente, EstadoConfirmada, EstadoCancelada
 def menu_principal():
 
     repo = ReservaRepositorio.get_instance()
@@ -45,7 +46,7 @@ def menu_principal():
                 fabrica = FactorySalaLaboratorio()
             
             sala = fabrica.criar_sala(id=sala_id)
-            reserva = Reserva(sala, usuario, inicio, fim)
+            reserva = Reserva(sala, usuario, inicio, fim, EstadoPendente())
             reserva.assinar(servico_email)
 
             print("---ESCOLHA DE ADICIONAIS---")
@@ -56,12 +57,12 @@ def menu_principal():
             opcionais = input("Opção: ")
             
             if opcionais == "1":
-                nova_reserva = Equipamentos(nova_reserva)
+                reserva = Equipamentos(reserva)
             elif opcionais == "2":
-                nova_reserva = ServicoLimpeza(nova_reserva)
+                reserva = ServicoLimpeza(reserva)
             elif opcionais == "3":
-                nova_reserva = Equipamentos(nova_reserva)
-                nova_reserva = ServicoLimpeza(nova_reserva)
+                reserva = Equipamentos(reserva)
+                reserva = ServicoLimpeza(reserva)
             
             print("Processando reserva...")
             if tipo_usuario == "Docente":
@@ -70,6 +71,7 @@ def menu_principal():
                 gerenciador.def_politica(PoliticaPrimeiroAReservar())
             if gerenciador.processar_reserva(reserva, repo.listar()):
                 repo.adicionar(reserva)
+                reserva.confirmar()
                 print("Reserva criada com sucesso!")
                 print("Descrição da reserva:", reserva.descricao())
             else:
@@ -83,9 +85,9 @@ def menu_principal():
             reservas = repo.listar()
             reserva_encontrada = False
             for r in reservas:
-                if r.usuario.nome == nome_usuario and r.status == "confirmada":
+                if r.usuario.nome == nome_usuario and r.get_status == "confirmada":
                     r.cancelar()
-                    encontrada = True
+                    reserva_encontrada = True
                     print("Reserva cancelada com sucesso!")
                     break
             if not reserva_encontrada:
