@@ -9,13 +9,14 @@ O sistema permite:
 ---
 
 ## Padrões de Projeto (Requisitos Obrigatórios)
-| Padrão | Papel no Exercício | Pontos de Atenção |
+| Padrão | Papel no Exercício | Arquivos |
 | :--- | :--- | :--- |
-| **Factory Method** | Instancia `SalaIndividual`, `SalaGrupo` e `SalaLaboratorio` sem acoplamento. | Criadas 3 subclasses de Sala. |
-| **Strategy** | Define a `PoliticaDeReserva` para detectar colisões (Padrao vs. Prioridade Docente). | Troca de regras em tempo de execução. |
-| **Observer** | Propaga notificações de alteração/cancelamento para usuários e serviços de relatório. | Implementação de push e pull de dados. |
-| **Singleton** | Gerencia o `ReservaRepositorio` de forma única na memória. | Garantia de thread-safety com Lock. |
-| **Decorator** |[BONUS] Adiciona serviços como `Equipamentos` e `Limpeza` às reservas existentes. | Wrappers para adicionar funcionalidades às reservas. |
+| **Factory Method** | Instancia `SalaIndividual`, `SalaGrupo` e `SalaLaboratorio` sem acoplamento. | factories.py |
+| **Strategy** | Define a `PoliticaDeReserva` para detectar colisões (Padrao vs. Prioridade Docente). | strategies.py |
+| **Observer** | Propaga notificações de alteração/cancelamento para usuários e serviços de relatório. | observer.py |
+| **Singleton** | Gerencia o `ReservaRepositorio` de forma única na memória. |reserva_repositorio.py|
+| **Decorator** |[BONUS] Adiciona serviços como `Equipamentos` e `Limpeza` às reservas existentes. |decorator.py |
+| **State** |[ADICIONAL] Gerencia o ciclo de vida (Pendente, Confirmada, Cancelada). | states.py |
 
 
 ---
@@ -41,12 +42,7 @@ O sistema permite:
     cd ReservaSalaDeEstudo/src
 ```
 
-3. Execute o arquivo principal:
-```bash
-    python main.py
-```
-
-4. Ou Utilize o menu interativo:
+4. Utilize o menu interativo:
 ```bash
     python menu_interativo.py
 ```
@@ -61,5 +57,5 @@ Veja o observer em ação notificando o cancelamento.
 Consulta o singleton para listar todas as salas ocupadas.
 
 ## Autores
-* Rafael Kenzo
+* Daniel Monteiro
 * Thaís Souza de Melo
